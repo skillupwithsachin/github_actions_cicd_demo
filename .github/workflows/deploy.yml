@@ -1,0 +1,27 @@
+name: Deploy Flask App
+
+on: [push, pull_request]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Flask App (Test Mode)
+        run: |
+          python app.py &
+          sleep 10
+          curl -I http://127.0.0.1:5000
+
